@@ -1,0 +1,49 @@
+---
+import { Code, Server, Zap, Database, Shield, Globe, type AstroComponent } from '@lucide/astro';
+
+const skills: { name: string; icon: AstroComponent; level: string }[] = [
+    { name: 'React & Next.js', icon: Code, level: 'Master' },
+    { name: 'Node.js & NestJS', icon: Server, level: 'Master' },
+    { name: 'TypeScript & Python', icon: Zap, level: 'Master' },
+    { name: 'PostgreSQL & MongoDB', icon: Database, level: 'Expert' },
+    { name: 'AWS & Docker', icon: Shield, level: 'Expert' },
+    { name: 'GraphQL & REST APIs', icon: Globe, level: 'Expert' },
+  ];
+---
+
+
+<section class="py-20 px-6" style={{backgroundColor: 'rgba(15, 15, 15, 0.2)'}}>
+	<div class="container mx-auto">
+		<h2 
+			class="text-4xl text-gunmetal font-bold text-center mb-12 animate-fade-in-up" 
+		>
+			Arsenal of Forbidden Arts
+		</h2>
+		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+			{skills.map((skill, index) => (
+				<div
+					class="border border-gray-700/20 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-105 hover:-translate-y-2 animate-scale-in" 
+					style={{
+						backgroundColor: 'rgba(5, 5, 5, 0.95)',
+						background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.9))',
+						boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(45, 27, 105, 0.2), inset 0 1px 0 rgba(139, 157, 195, 0.1), 0 0 15px rgba(45, 27, 105, 0.4), inset 0 0 10px rgba(45, 27, 105, 0.1)',
+						animationDelay: `${index * 0.1}s`,
+						borderColor: '#7a8db3' + '50'
+					}}
+				>
+					<div class="flex items-center mb-4">
+						<div 
+							class="text-gunmetal mr-4 transition-transform duration-300 hover:scale-110"
+						>
+							<skill.icon class="w-6 h-6" />
+						</div>
+						<div>
+							<h3 class="font-semibold text-lg">{skill.name}</h3>
+							<p class="text-sm text-gray-400">{skill.level}</p>
+						</div>
+					</div>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

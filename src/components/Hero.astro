@@ -1,0 +1,55 @@
+---
+import { Sword, Linkedin, Github, Mail } from '@lucide/astro';
+import Avatar from '../components/Avatar.astro';
+---
+
+<section class="pt-24 pb-20 px-6">
+	<div class="container mx-auto text-center">
+		<div class="mb-8 flex flex-col items-center">
+			<Avatar src="/avatar.jpeg" size="large" />
+		</div>
+		<h1 
+			class="text-4xl md:text-6xl font-bold mb-6 font-uncial text-silver"
+		>
+			JAVIER OCAMPO
+		</h1>
+		<p 
+			class="text-2xl md:text-3xl mb-4 animate-fade-in-up text-[#708090]"
+			style={{
+				animationDelay: '0.2s'
+			}}
+		>
+			Fullstack Developer
+		</p>
+		<p 
+			class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-400 animate-fade-in-up" 
+			style={{animationDelay: '0.4s'}}
+		>
+			Forging web applications in the shadows of ancient code. 
+			Guardian of the digital realm, wielder of arcane technologies and vanquisher of chaos.
+		</p>
+		<div 
+			class="flex justify-center space-x-6 mb-12 animate-fade-in-up" 
+			style={{animationDelay: '0.6s'}}
+		>
+			<a 
+				href="https://github.com" 
+				class="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-gunmetal"
+			>
+				<Github class="w-8 h-8" />
+			</a>
+			<a 
+				href="https://linkedin.com" 
+				class="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-gunmetal"
+			>
+				<Linkedin class="w-8 h-8" />
+			</a>
+			<a 
+				href="mailto:javier@javierocampo.dev" 
+				class="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-gunmetal"
+			>
+				<Mail class="w-8 h-8" />
+			</a>
+		</div>
+	</div>
+</section>

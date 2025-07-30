@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gunmetal: #7a8db3;
+  --color-silver: #a8a8a8;
+  --color-silverLight: #c0c0c0;
+  --color-steel: #4f5c6b;
+  --color-steelDark: #2c333a;
+  --color-shadow: #2d1b69;
+  --color-shadowLight: #1a0f3d;
+  --color-mordor: #0f0f0f;
+  --color-yiyo: #ffc0cb;
+}

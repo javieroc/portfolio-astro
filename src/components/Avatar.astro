@@ -1,0 +1,16 @@
+---
+interface Props {
+	src: string;
+	size: 'small' | 'medium' | 'large';
+}
+
+const { src, size } = Astro.props;
+const sizeClass = {
+	small: 'w-24 h-24',
+	medium: 'w-32 h-32',
+	large: 'w-40 h-40'
+}[size] || 'w-32 h-32';
+
+const _class =  `${sizeClass} border-4 border-white rounded-full`; 
+---
+<img class={_class} src={src} alt="Javier Ocampo" loading="lazy">

@@ -1,0 +1,38 @@
+---
+import { Mail } from '@lucide/astro';
+---
+
+<section id="contact" class="py-20 px-6" style={{backgroundColor: 'rgba(15, 15, 15, 0.2)'}}>
+	<div class="container mx-auto text-center">
+		<h2 
+			class="text-silverLight text-4xl font-bold mb-12 animate-fade-in-up" 
+		>
+			Invoke the Shadow Architect
+		</h2>
+		<div
+			class="border border-gray-700/20 backdrop-blur-sm p-8 max-w-2xl mx-auto animate-scale-in hover:scale-105 transition-transform duration-500" 
+			style={{
+				backgroundColor: 'rgba(5, 5, 5, 0.95)',
+				background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.9))',
+				boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(45, 27, 105, 0.2), inset 0 1px 0 rgba(139, 157, 195, 0.1)'
+			}}
+		>
+			<p class="text-lg mb-8 animate-fade-in-up">
+				Ready to venture into the unknown and manifest digital sorcery? 
+				Let us weave code from the very fabric of the void.
+			</p>
+			<div 
+				class="flex justify-center space-x-8 mb-8 animate-fade-in-up" 
+				style={{animationDelay: '0.2s'}}
+			>
+				<a 
+					href="mailto:javier@javierocampo.dev" 
+					class="text-gunmetal flex items-center space-x-2 transition-all duration-300 hover:scale-105"
+				>
+					<Mail class="w-6 h-6" />
+					<span>ferroxido@gmail.com</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
