@@ -1,17 +1,57 @@
+<style>
+	#menu-btn .line {
+		transition:
+			transform 0.3s ease-in-out,
+			opacity 0.3s ease-in-out;
+		transform-origin: center;
+	}
+	#menu-btn.is-open .top {
+		transform: translateY(6px) rotate(45deg);
+	}
+	#menu-btn.is-open .middle {
+		opacity: 0;
+	}
+	#menu-btn.is-open .bottom {
+		transform: translateY(-6px) rotate(-45deg);
+	}
+</style>
+
 <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-700/20">
 	<div class="container mx-auto px-6 py-4">
 		<div class="flex justify-between items-center">
-			<div
-				class="font-uncial text-2xl text-gunmetal"
-			>
-				⚔️ JAVIER OCAMPO
-			</div>
+			<div class="font-uncial text-2xl text-gunmetal">⚔️ JAVIER OCAMPO</div>
 			<div class="hidden md:flex space-x-8">
 				<a href="#about" class="hover:text-gray-400 transition-colors">About</a>
 				<a href="#skills" class="hover:text-gray-400 transition-colors">Skills</a>
 				<a href="#projects" class="hover:text-gray-400 transition-colors">Projects</a>
 				<a href="#contact" class="hover:text-gray-400 transition-colors">Contact</a>
 			</div>
+			<div class="md:hidden">
+				<button id="menu-btn" class="text-white focus:outline-none">
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path class="line top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path>
+						<path class="line middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path>
+						<path class="line bottom" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"></path>
+					</svg>
+				</button>
+			</div>
 		</div>
 	</div>
+	<div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
+		<a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
+		<a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-700">Skills</a>
+		<a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-700">Projects</a>
+		<a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-700">Contact</a>
+	</div>
 </nav>
+
+<script>
+	const menuBtn = document.getElementById('menu-btn');
+	const mobileMenu = document.getElementById('mobile-menu');
+
+	menuBtn?.addEventListener('click', function () {
+		const isOpen = menuBtn.classList.contains('is-open');
+		menuBtn.classList.toggle('is-open', !isOpen);
+		mobileMenu.style.maxHeight = isOpen ? '0px' : `${mobileMenu.scrollHeight}px`;
+	});
+</script>
