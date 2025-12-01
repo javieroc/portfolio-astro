@@ -5,6 +5,7 @@ const projects = defineCollection({
     title: z.string(),
     author: z.string(),
     description: z.string(),
+    image: z.string().optional(),
     github: z.string().optional(),
     demo: z.string().optional(),
     stack: z.array(z.string()),

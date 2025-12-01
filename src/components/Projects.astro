@@ -1,6 +1,7 @@
 ---
 import { Github, Globe } from '@lucide/astro';
 import { getCollection } from 'astro:content';
+import ProjectModal from './ProjectModal.astro';
 
 const projects = await getCollection('projects');
 ---
@@ -14,50 +15,65 @@ const projects = await getCollection('projects');
 		</h2>
 		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
 			{projects.map((project, index) => {
-				const { title, description, stack, github, demo } = project.data;
+				const { title, description, stack, github, demo, image } = project.data;
+				const modalId = `project-modal-${project.slug}`;
 				return (
-				<div
-					class="border border-gray-700/20 backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-scale-in" 
-					style={{
-						backgroundColor: 'rgba(5, 5, 5, 0.95)',
-						background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.9))',
-						boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(45, 27, 105, 0.2), inset 0 1px 0 rgba(139, 157, 195, 0.1), 0 0 15px rgba(45, 27, 105, 0.4), inset 0 0 10px rgba(45, 27, 105, 0.1)',
-						animationDelay: `${index * 0.2}s`,
-						borderColor: '#7a8db3' + '50'
-					}}
-				>
-					<h3
-						class="text-xl text-gunmetal font-bold mb-3 transition-colors duration-300"
+				<>
+					<div
+						class="border border-gray-700/20 backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-scale-in cursor-pointer"
+						style={{
+							backgroundColor: 'rgba(5, 5, 5, 0.95)',
+							background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.9))',
+							boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(45, 27, 105, 0.2), inset 0 1px 0 rgba(139, 157, 195, 0.1), 0 0 15px rgba(45, 27, 105, 0.4), inset 0 0 10px rgba(45, 27, 105, 0.1)',
+							animationDelay: `${index * 0.2}s`,
+							borderColor: '#7a8db3' + '50'
+						}}
+						onclick={`document.getElementById('${modalId}').classList.remove('hidden')`}
 					>
-						{title}
-					</h3>
-					<p class="text-gray-400 mb-4">{description}</p>
-					<div class="flex flex-wrap gap-2 mb-4">
-						{stack.map((tech) => (
-							<span 
-								class="bg-steelDark text-sm text-steel-dark px-2 py-1 rounded"
+						<h3
+							class="text-xl text-gunmetal font-bold mb-3 transition-colors duration-300"
+						>
+							{title}
+						</h3>
+						<p class="text-gray-400 mb-4">{description}</p>
+						<div class="flex flex-wrap gap-2 mb-4">
+							{stack.map((tech) => (
+								<span 
+									class="bg-steelDark text-sm text-steel-dark px-2 py-1 rounded"
+								>
+									{tech}
+								</span>
+							))}
+						</div>
+						<div class="flex space-x-4">
+							<a
+								href={github}
+								target="_blank"
+								class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+								onclick="event.stopPropagation()"
 							>
-								{tech}
-							</span>
-						))}
+								<Github class="w-5 h-5" />
+							</a>
+							{demo && <a
+								href={demo}
+								target="_blank"
+								class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+								onclick="event.stopPropagation()"
+							>
+								<Globe class="w-5 h-5" />
+							</a>}
+						</div>
 					</div>
-					<div class="flex space-x-4">
-						<a
-							href={github}
-							target="_blank"
-							class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-						>
-							<Github class="w-5 h-5" />
-						</a>
-						{demo && <a
-							href={demo}
-							target="_blank"
-							class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-						>
-							<Globe class="w-5 h-5" />
-						</a>}
-					</div>
-				</div>
+					<ProjectModal 
+						id={modalId} 
+						title={title} 
+						description={description} 
+						image={image} 
+						stack={stack} 
+						github={github} 
+						demo={demo} 
+					/>
+				</>
 			)})}
 		</div>
 	</div>

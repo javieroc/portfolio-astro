@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { slug: project.slug } }));
+}
+
+const { slug } = Astro.params;
+const projects = await getCollection('projects');
+const project = projects.find((p) => p.slug === slug);
+
+if (!project) {
+  throw new Error(`Project not found: ${slug}`);
+}
+
+const { title, description, stack, github, demo } = project.data;
+const { Content } = await render(project);
+---
+
+<Layout title={title}>
+  <section class="py-20 px-6">
+    <div class="container mx-auto max-w-3xl">
+      <h1 class="text-4xl font-bold mb-4">{title}</h1>
+      <p class="text-gray-400 mb-6">{description}</p>
+      <div class="flex flex-wrap gap-2 mb-6">
+        {stack?.map((t) => (
+          <span class="bg-steelDark text-sm text-steel-dark px-2 py-1 rounded">{t}</span>
+        ))}
+      </div>
+      <div class="flex gap-4 mb-8">
+        {github && (
+          <a href={github} target="_blank" rel="noopener noreferrer" class="text-silver">GitHub</a>
+        )}
+        {demo && (
+          <a href={demo} target="_blank" rel="noopener noreferrer" class="text-silver">Live Demo</a>
+        )}
+      </div>
+
+      {Content && (
+        <div class="prose dark:prose-invert">
+          <Content />
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

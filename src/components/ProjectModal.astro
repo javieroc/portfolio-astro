@@ -1,0 +1,56 @@
+---
+import { Github, Globe, X } from '@lucide/astro';
+
+export interface Props {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  stack: string[];
+  github?: string;
+  demo?: string;
+}
+
+const { id, title, description, image, stack, github, demo } = Astro.props;
+---
+
+<div id={id} class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-4 z-50 hidden" aria-labelledby={`${id}-title`} role="dialog" aria-modal="true">
+  <div class="bg-gray-900 border border-gray-700/50 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-scale-in"
+       style={{
+         background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98))',
+         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 4px 16px rgba(45, 27, 105, 0.3), inset 0 1px 0 rgba(139, 157, 195, 0.1), 0 0 20px rgba(45, 27, 105, 0.5), inset 0 0 15px rgba(45, 27, 105, 0.2)'
+       }}>
+    <div class="p-6">
+      <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors" onclick={`document.getElementById('${id}').classList.add('hidden')`}>
+        <X class="w-6 h-6" />
+      </button>
+
+      {image && <img src={image} alt={title} class="w-full h-auto max-h-96 object-contain rounded-t-lg mb-6" />}
+      
+      <h3 id={`${id}-title`} class="text-3xl text-gunmetal font-bold mb-4">{title}</h3>
+      
+      <p class="text-gray-400 mb-6">{description}</p>
+      
+      <div class="flex flex-wrap gap-3 mb-6">
+        {stack.map((tech) => (
+          <span class="bg-steelDark text-sm text-steel-dark px-3 py-1 rounded-full">{tech}</span>
+        ))}
+      </div>
+      
+      <div class="flex space-x-6">
+        {github && (
+          <a href={github} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white">
+            <Github class="w-5 h-5 mr-2" />
+            <span>GitHub</span>
+          </a>
+        )}
+        {demo && (
+          <a href={demo} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white">
+            <Globe class="w-5 h-5 mr-2" />
+            <span>Demo</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
