@@ -9,6 +9,7 @@ const projects = defineCollection({
     github: z.string().optional(),
     demo: z.string().optional(),
     stack: z.array(z.string()),
+    weight: z.number(),
   })
 })
 
