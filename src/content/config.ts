@@ -8,6 +8,7 @@ const projects = defineCollection({
     image: z.string().optional(),
     github: z.string().optional(),
     demo: z.string().optional(),
+    apk: z.string().optional(),
     stack: z.array(z.string()),
     weight: z.number(),
   })

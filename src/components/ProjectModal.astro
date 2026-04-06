@@ -1,5 +1,6 @@
 ---
 import { Github, Globe, X } from '@lucide/astro';
+import androidLogo from '../assets/android-logo.svg';
 
 export interface Props {
   id: string;
@@ -9,9 +10,10 @@ export interface Props {
   stack: string[];
   github?: string;
   demo?: string;
+  apk?: string;
 }
 
-const { id, title, description, image, stack, github, demo } = Astro.props;
+const { id, title, description, image, stack, github, demo, apk } = Astro.props;
 ---
 
 <div id={id} class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-4 z-50 hidden" aria-labelledby={`${id}-title`} role="dialog" aria-modal="true">
@@ -33,11 +35,11 @@ const { id, title, description, image, stack, github, demo } = Astro.props;
       
       <div class="flex flex-wrap gap-3 mb-6">
         {stack.map((tech) => (
-          <span class="bg-steelDark text-sm text-steel-dark px-3 py-1 rounded-full">{tech}</span>
+          <span class="bg-steelDark/30 text-sm text-silver/80 px-3 py-1 rounded-full border border-silver/10">{tech}</span>
         ))}
       </div>
       
-      <div class="flex space-x-6">
+      <div class="flex flex-wrap gap-6">
         {github && (
           <a href={github} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white">
             <Github class="w-5 h-5 mr-2" />
@@ -50,7 +52,14 @@ const { id, title, description, image, stack, github, demo } = Astro.props;
             <span>Demo</span>
           </a>
         )}
+        {apk && (
+          <a href={apk} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white" onclick="if(!confirm('This will download the APK file for Android. Do you wish to continue?')) return false;">
+            <img src={androidLogo.src} alt="Android" class="w-5 h-5 mr-2 brightness-0 invert" />
+            <span>Download APK</span>
+          </a>
+        )}
       </div>
     </div>
   </div>
 </div>
+

@@ -2,6 +2,7 @@
 import { Github, Globe } from '@lucide/astro';
 import { getCollection } from 'astro:content';
 import ProjectModal from './ProjectModal.astro';
+import androidLogo from '../assets/android-logo.svg';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.weight - b.data.weight);
 ---
@@ -15,7 +16,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.weight 
 		</h2>
 		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
 			{projects.map((project, index) => {
-				const { title, description, stack, github, demo, image } = project.data;
+				const { title, description, stack, github, demo, image, apk } = project.data;
 				const modalId = `project-modal-${project.slug}`;
 				return (
 				<>
@@ -62,6 +63,14 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.weight 
 							>
 								<Globe class="w-5 h-5" />
 							</a>}
+							{apk && <a
+								href={apk}
+								target="_blank"
+								class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+								onclick="event.stopPropagation(); if(!confirm('Do you want to download the APK for this project?')) return false;"
+							>
+								<img src={androidLogo.src} alt="Android" class="w-5 h-5 brightness-0 invert" />
+							</a>}
 						</div>
 					</div>
 					<ProjectModal 
@@ -72,6 +81,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.weight 
 						stack={stack} 
 						github={github} 
 						demo={demo} 
+						apk={apk}
 					/>
 				</>
 			)})}

@@ -5,6 +5,7 @@ weight: 3
 description: A retro terminal-style Android dashboard app featuring weather, location, time, and a local music player with a CRT/CLI aesthetic.
 image: /portfolio-astro/projects/mushits.png
 github: https://github.com/javieroc/MuShits
+apk: https://github.com/javieroc/MuShits/releases/latest/download/app-release.apk
 stack:
   - Kotlin
   - Jetpack Compose
