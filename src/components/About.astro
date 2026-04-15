@@ -2,46 +2,52 @@
 import Avatar from './Avatar.astro';
 ---
 
-<section id="about" class="py-20 px-6">
+<section id="about" class="py-24 px-4 sm:px-6 bg-white/50">
 	<div class="container mx-auto">
-		<h2 
-			class="text-4xl text-silverLight font-bold text-center mb-12 animate-fade-in-up" 
-		>
-			The Chronicle of a Developer
+		<h2 class="text-3xl text-arctic font-bold text-center mb-2 tracking-wide reveal">
+			About Me
 		</h2>
-		<div
-			class="border border-gray-700/20 backdrop-blur-sm p-8 max-w-4xl mx-auto" 
-			style={{
-				backgroundColor: 'rgba(5, 5, 5, 0.95)',
-				background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.9))',
-				boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(45, 27, 105, 0.2), inset 0 1px 0 rgba(139, 157, 195, 0.1)'
-			}}
-		>
-			<div class="flex flex-col md:flex-row gap-6 items-center">
-				<div class="flex flex-col items-center gap-4">
-					<Avatar src="/portfolio-astro/avatar.jpeg" size="medium" />
-					<img 
-						src="/portfolio-astro/sword.png"
-						alt="Sword"
-						class="h-60 md:h-94 object-contain animate-fade-in-up"
-					/>
-				</div>
-				<div class="flex-1">
-					<p class="text-lg leading-relaxed mb-6">
-						In the shadows of the digital void, where ancient algorithms whisper forgotten secrets and databases guard their treasures in cryptic vaults, I have forged my path through darkness. Like a wraith-smith working in the depths of forgotten realms, I craft applications that emerge from shadow into light.
-					</p>
+		<div class="w-12 h-0.5 bg-glacier mx-auto mb-12 reveal" style="transition-delay: 0.1s"></div>
 
-					<p class="text-lg leading-relaxed mb-6">
-						Born in the southern lands of Argentina, I honed my craft beneath the pale glow of countless screens, shaping systems from the first glyph of design to the final ritual of deployment. In time, the winds of destiny carried me across the seas to the emerald isles of Dublin, Ireland — a land of mist and code, where I now continue my journey as a full-stack sorcerer of software.
-					</p>
+		<div class="max-w-4xl mx-auto reveal" style="transition-delay: 0.2s">
+			<div
+				class="bg-white border border-mist/60 p-8 md:p-10"
+				style="box-shadow: 0 4px 24px rgba(52, 89, 136, 0.06), 0 1px 4px rgba(52, 89, 136, 0.04);"
+			>
+				<div class="flex flex-col md:flex-row gap-10 items-center md:items-start">
+					<div class="flex-shrink-0 flex flex-col items-center gap-6">
+						<Avatar src="/portfolio-astro/avatar.jpeg" size="medium" />
+						<img
+							src="/portfolio-astro/sword.png"
+							alt="Sword"
+							class="h-64 md:h-80 object-contain opacity-80"
+						/>
+					</div>
+					<div class="flex-1 space-y-5 text-slate leading-relaxed">
+						<p class="text-base md:text-lg">
+							From Argentina to Ireland — I've spent the past several years building full-stack
+							web applications, from pixel-precise interfaces to resilient backend systems.
+							I care about clean architecture, thoughtful APIs, and code that reads as well
+							as it performs.
+						</p>
 
-					<p class="text-lg leading-relaxed mb-6">
-						Whether forging resilient architectures, enchanting interfaces, or conjuring seamless deployments from the void, I walk the path of the software craftsman — alone, yet ever connected to the great weave of the digital realms.
-					</p>
+						<p class="text-base md:text-lg">
+							Born in Argentina, I sharpened my craft across a range of domains before the
+							winds of opportunity brought me to Dublin, Ireland — a city of misty coastlines
+							and a thriving tech scene that I've been proud to be part of ever since.
+						</p>
 
-					<p class="text-lg leading-relaxed mb-6">
-						When not weaving spells in code, you'll find me in communion with the thunderous symphonies of metal, drawing power from the darkest corners of imagination, and perpetually seeking new mysteries to unravel in the ever-expanding digital cosmos.
-					</p>
+						<p class="text-base md:text-lg">
+							Outside the keyboard, open landscapes give me perspective. Whether it's the
+							wild coast of Connemara, a long trail through the mountains, or simply the
+							quiet expanse of an overcast sky — those moments of scale and stillness shape
+							how I approach complex problems in software.
+						</p>
+
+						<p class="text-base md:text-lg">
+							Always building, always learning. The next summit is always worth it.
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>

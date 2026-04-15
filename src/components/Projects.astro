@@ -7,84 +7,160 @@ import androidLogo from '../assets/android-logo.svg';
 const projects = (await getCollection('projects')).sort((a, b) => a.data.weight - b.data.weight);
 ---
 
-<section id="projects" class="py-20 px-6">
-	<div class="container mx-auto">
-		<h2
-			class="text-4xl text-gunmetal font-bold text-center mb-12 animate-fade-in-up" 
-		>
-			Arcane Creations
-		</h2>
-		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-			{projects.map((project, index) => {
-				const { title, description, stack, github, demo, image, apk } = project.data;
-				const modalId = `project-modal-${project.slug}`;
-				return (
-				<>
-					<div
-						class="border border-gray-700/20 backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-scale-in cursor-pointer"
-						style={{
-							backgroundColor: 'rgba(5, 5, 5, 0.95)',
-							background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.9))',
-							boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(45, 27, 105, 0.2), inset 0 1px 0 rgba(139, 157, 195, 0.1), 0 0 15px rgba(45, 27, 105, 0.4), inset 0 0 10px rgba(45, 27, 105, 0.1)',
-							animationDelay: `${index * 0.2}s`,
-							borderColor: '#7a8db3' + '50'
-						}}
-						onclick={`document.getElementById('${modalId}').classList.remove('hidden')`}
-					>
-						<h3
-							class="text-xl text-gunmetal font-bold mb-3 transition-colors duration-300"
-						>
-							{title}
-						</h3>
-						<p class="text-gray-400 mb-4">{description}</p>
-						<div class="flex flex-wrap gap-2 mb-4">
-							{stack.map((tech) => (
-								<span 
-									class="bg-steelDark text-sm text-steel-dark px-2 py-1 rounded"
-								>
-									{tech}
-								</span>
-							))}
-						</div>
-						<div class="flex space-x-4">
-							<a
-								href={github}
-								target="_blank"
-								class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-								onclick="event.stopPropagation()"
-							>
-								<Github class="w-5 h-5" />
-							</a>
-							{demo && <a
-								href={demo}
-								target="_blank"
-								class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-								onclick="event.stopPropagation()"
-							>
-								<Globe class="w-5 h-5" />
-							</a>}
-							{apk && <a
-								href={apk}
-								target="_blank"
-								class="text-silver transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-								onclick="event.stopPropagation(); if(!confirm('Do you want to download the APK for this project?')) return false;"
-							>
-								<img src={androidLogo.src} alt="Android" class="w-5 h-5 brightness-0 invert" />
-							</a>}
-						</div>
-					</div>
-					<ProjectModal 
-						id={modalId} 
-						title={title} 
-						description={description} 
-						image={image} 
-						stack={stack} 
-						github={github} 
-						demo={demo} 
-						apk={apk}
-					/>
-				</>
-			)})}
-		</div>
-	</div>
+<section id="projects" class="py-24 px-4 sm:px-6 projects-section">
+  <div class="container mx-auto">
+
+    <h2 class="text-3xl text-arctic font-bold text-center mb-2 tracking-wide reveal">
+      Projects
+    </h2>
+    <div class="w-12 h-0.5 bg-glacier mx-auto mb-16 reveal" style="transition-delay: 0.1s"></div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto stagger">
+      {projects.map((project) => {
+        const { title, description, stack, github, demo, image, apk } = project.data;
+        const modalId = `project-modal-${project.slug}`;
+        return (
+        <>
+          <div
+            class="glass-card group flex flex-col cursor-pointer overflow-hidden"
+            onclick={`document.getElementById('${modalId}').classList.remove('hidden')`}
+          >
+            <!-- Project image -->
+            <div class="relative h-48 overflow-hidden flex-shrink-0">
+              {image
+                ? <img
+                    src={image}
+                    alt={title}
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                : <div class="w-full h-full bg-gradient-to-br from-glacier/20 to-arctic/30"></div>
+              }
+              <!-- Fade image into glass panel below -->
+              <div class="absolute inset-x-0 bottom-0 h-16
+                          bg-gradient-to-t from-white/70 to-transparent"></div>
+            </div>
+
+            <!-- Glass content panel -->
+            <div class="glass-content flex flex-col flex-1 p-5">
+              <h3 class="font-bold text-arctic text-sm tracking-wide mb-2
+                         group-hover:text-glacier transition-colors duration-300 font-cinzel">
+                {title}
+              </h3>
+              <p class="text-xs text-slate leading-relaxed mb-4 flex-1 line-clamp-3">
+                {description}
+              </p>
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                {stack.map((tech) => (
+                  <span class="tag text-[10px] px-2 py-0.5 tracking-wide uppercase">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <!-- Actions -->
+              <div class="flex items-center gap-5 pt-3 border-t border-white/50">
+                {github && (
+                  <a href={github} target="_blank" aria-label="GitHub"
+                    class="action-icon" onclick="event.stopPropagation()">
+                    <Github class="w-6 h-6" />
+                  </a>
+                )}
+                {demo && (
+                  <a href={demo} target="_blank" aria-label="Live demo"
+                    class="action-icon" onclick="event.stopPropagation()">
+                    <Globe class="w-6 h-6" />
+                  </a>
+                )}
+                {apk && (
+                  <a href={apk} target="_blank" aria-label="Download APK"
+                    class="action-icon"
+                    onclick="event.stopPropagation(); if(!confirm('Download the APK?')) return false;">
+                    <img src={androidLogo.src} alt="Android" class="w-6 h-6 opacity-60 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                )}
+                <span class="ml-auto text-[10px] text-glacier/60 tracking-widest uppercase
+                             group-hover:text-glacier transition-colors duration-300">
+                  View →
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <ProjectModal
+            id={modalId}
+            title={title}
+            description={description}
+            image={image}
+            stack={stack}
+            github={github}
+            demo={demo}
+            apk={apk}
+          />
+        </>
+      )})}
+    </div>
+  </div>
 </section>
+
+<style>
+  .projects-section {
+    background: linear-gradient(155deg, #EDF0F8 0%, #E6EBF5 60%, #EDF0F8 100%);
+  }
+
+  .glass-card {
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.60) 50%,
+      rgba(243, 245, 249, 0.72) 100%
+    );
+    backdrop-filter: blur(20px) saturate(160%) brightness(102%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(102%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-bottom-color: rgba(190, 197, 215, 0.45);
+    border-right-color: rgba(190, 197, 215, 0.45);
+    box-shadow:
+      0 4px 24px rgba(52, 89, 136, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.95) inset;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.35s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.72) 50%,
+      rgba(243, 245, 249, 0.85) 100%
+    );
+    box-shadow:
+      0 20px 50px rgba(52, 89, 136, 0.13),
+      0 6px 16px rgba(52, 89, 136, 0.07),
+      0 1px 0 rgba(255, 255, 255, 0.95) inset;
+  }
+
+  .glass-content {
+    background: transparent;
+  }
+
+  .tag {
+    background: rgba(117, 144, 189, 0.12);
+    border: 1px solid rgba(117, 144, 189, 0.25);
+    color: #477278;
+    border-radius: 2px;
+  }
+
+  .action-icon {
+    color: rgba(190, 197, 215, 0.9);
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+  .action-icon:hover {
+    color: #345988;
+    transform: scale(1.15) translateY(-1px);
+  }
+
+  .font-cinzel {
+    font-family: 'Cinzel Variable', serif;
+  }
+</style>

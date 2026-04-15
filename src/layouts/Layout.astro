@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import '@fontsource-variable/cinzel';
-import '@fontsource/uncial-antiqua';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
@@ -22,7 +21,7 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="min-h-screen bg-black text-gray-300">
+	<body class="min-h-screen bg-frost text-slate">
 		<Nav />
 		<slot />
 		<Footer />

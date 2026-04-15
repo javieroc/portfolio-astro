@@ -16,50 +16,171 @@ export interface Props {
 const { id, title, description, image, stack, github, demo, apk } = Astro.props;
 ---
 
-<div id={id} class="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-4 z-50 hidden" aria-labelledby={`${id}-title`} role="dialog" aria-modal="true">
-  <div class="bg-gray-900 border border-gray-700/50 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-scale-in"
-       style={{
-         background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98))',
-         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 4px 16px rgba(45, 27, 105, 0.3), inset 0 1px 0 rgba(139, 157, 195, 0.1), 0 0 20px rgba(45, 27, 105, 0.5), inset 0 0 15px rgba(45, 27, 105, 0.2)'
-       }}>
-    <div class="p-6">
-      <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors" onclick={`document.getElementById('${id}').classList.add('hidden')`}>
-        <X class="w-6 h-6" />
-      </button>
+<div
+  id={id}
+  class="modal-backdrop fixed inset-0 flex justify-center items-end sm:items-center p-0 sm:p-4 z-50 hidden"
+  aria-labelledby={`${id}-title`}
+  role="dialog"
+  aria-modal="true"
+  onclick={`if(event.target === this) closeModal('${id}')`}
+>
+  <div class="modal-panel w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-hidden flex flex-col
+              animate-modal-in rounded-t-2xl sm:rounded-none">
 
-      {image && <img src={image} alt={title} class="w-full h-auto max-h-96 object-contain rounded-t-lg mb-6" />}
-      
-      <h3 id={`${id}-title`} class="text-3xl text-gunmetal font-bold mb-4">{title}</h3>
-      
-      <p class="text-gray-400 mb-6">{description}</p>
-      
-      <div class="flex flex-wrap gap-3 mb-6">
+    <!-- Image header: fixed height, full image visible via object-contain -->
+    <div class="relative flex-shrink-0 h-64 image-header">
+      {image
+        ? <img src={image} alt={title} class="w-full h-full object-contain" />
+        : <div class="w-full h-full bg-gradient-to-br from-glacier/20 to-arctic/30"></div>
+      }
+      <!-- Gradient for title legibility -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+
+      <!-- Title overlaid -->
+      <div class="absolute bottom-0 inset-x-0 p-5">
+        <h3 id={`${id}-title`}
+          class="text-xl sm:text-2xl font-bold text-white tracking-wide font-cinzel">
+          {title}
+        </h3>
+      </div>
+
+      <!-- Close button -->
+      <button
+        class="close-btn absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center
+               transition-all duration-200"
+        onclick={`closeModal('${id}')`}
+        aria-label="Close"
+      >
+        <X class="w-5 h-5" />
+      </button>
+    </div>
+
+    <!-- Scrollable content -->
+    <div class="overflow-y-auto flex-1 p-5 sm:p-7">
+
+      <p class="text-slate leading-relaxed text-sm mb-6">{description}</p>
+
+      <!-- Stack tags -->
+      <div class="flex flex-wrap gap-2 mb-7">
         {stack.map((tech) => (
-          <span class="bg-steelDark/30 text-sm text-silver/80 px-3 py-1 rounded-full border border-silver/10">{tech}</span>
+          <span class="modal-tag text-xs px-3 py-1 tracking-wide">{tech}</span>
         ))}
       </div>
-      
-      <div class="flex flex-wrap gap-6">
+
+      <!-- Action buttons -->
+      <div class="flex flex-wrap gap-3 pt-5 border-t border-white/40">
         {github && (
-          <a href={github} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white">
-            <Github class="w-5 h-5 mr-2" />
-            <span>GitHub</span>
+          <a href={github} target="_blank"
+            class="modal-btn flex items-center gap-2.5">
+            <Github class="w-5 h-5 flex-shrink-0" />
+            <span class="text-sm font-medium tracking-wide">GitHub</span>
           </a>
         )}
         {demo && (
-          <a href={demo} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white">
-            <Globe class="w-5 h-5 mr-2" />
-            <span>Demo</span>
+          <a href={demo} target="_blank"
+            class="modal-btn flex items-center gap-2.5">
+            <Globe class="w-5 h-5 flex-shrink-0" />
+            <span class="text-sm font-medium tracking-wide">Live Demo</span>
           </a>
         )}
         {apk && (
-          <a href={apk} target="_blank" class="flex items-center text-silver transition-all duration-300 hover:scale-110 hover:text-white" onclick="if(!confirm('This will download the APK file for Android. Do you wish to continue?')) return false;">
-            <img src={androidLogo.src} alt="Android" class="w-5 h-5 mr-2 brightness-0 invert" />
-            <span>Download APK</span>
+          <a href={apk} target="_blank"
+            class="modal-btn flex items-center gap-2.5"
+            onclick="if(!confirm('This will download the APK. Continue?')) return false;">
+            <img src={androidLogo.src} alt="Android" class="w-5 h-5 flex-shrink-0" />
+            <span class="text-sm font-medium tracking-wide">Download APK</span>
           </a>
         )}
       </div>
     </div>
+
   </div>
 </div>
 
+<style>
+  .modal-backdrop {
+    background: rgba(20, 38, 72, 0.45);
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+  }
+
+  .modal-panel {
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.90) 0%,
+      rgba(243, 245, 249, 0.92) 100%
+    );
+    backdrop-filter: blur(28px) saturate(180%) brightness(103%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(103%);
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    border-bottom-color: rgba(190, 197, 215, 0.5);
+    border-right-color: rgba(190, 197, 215, 0.5);
+    box-shadow:
+      0 32px 80px rgba(20, 38, 72, 0.22),
+      0 8px 24px rgba(52, 89, 136, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  .image-header {
+    background: #EDF0F8;
+    border-bottom: 1px solid rgba(190, 197, 215, 0.35);
+  }
+
+  .close-btn {
+    background: rgba(20, 38, 72, 0.35);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .close-btn:hover {
+    background: rgba(20, 38, 72, 0.55);
+    color: #fff;
+  }
+
+  .modal-tag {
+    background: rgba(117, 144, 189, 0.13);
+    border: 1px solid rgba(117, 144, 189, 0.28);
+    color: #345988;
+    border-radius: 2px;
+  }
+
+  .modal-btn {
+    background: rgba(52, 89, 136, 0.08);
+    border: 1px solid rgba(52, 89, 136, 0.18);
+    color: #345988;
+    padding: 0.5rem 1.1rem;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .modal-btn:hover {
+    background: rgba(52, 89, 136, 0.15);
+    border-color: rgba(52, 89, 136, 0.35);
+    transform: translateY(-1px);
+  }
+
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .animate-modal-in {
+    animation: modal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .font-cinzel {
+    font-family: 'Cinzel Variable', serif;
+  }
+</style>
+
+<script>
+  function closeModal(id: string) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  }
+  // make it global so inline onclick can find it
+  (window as any).closeModal = closeModal;
+</script>

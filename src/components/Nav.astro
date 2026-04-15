@@ -14,21 +14,45 @@
 	#menu-btn.is-open .bottom {
 		transform: translateY(-6px) rotate(-45deg);
 	}
+
+	.nav-link {
+		position: relative;
+		color: #477278;
+		transition: color 0.25s ease;
+	}
+	.nav-link::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		width: 0;
+		height: 1.5px;
+		background: #345988;
+		transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.nav-link:hover,
+	.nav-link.active {
+		color: #345988;
+	}
+	.nav-link:hover::after,
+	.nav-link.active::after {
+		width: 100%;
+	}
 </style>
 
-<nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-700/20">
+<nav class="fixed top-0 w-full z-50 bg-frost/90 backdrop-blur-md border-b border-mist/40">
 	<div class="container mx-auto px-6 py-4">
 		<div class="flex justify-between items-center">
-			<div class="font-uncial text-2xl text-gunmetal">⚔️ JAVIER OCAMPO</div>
-			<div class="hidden md:flex space-x-8">
-				<a href="#about" class="hover:text-gray-400 transition-colors">About</a>
-				<a href="#skills" class="hover:text-gray-400 transition-colors">Skills</a>
-				<a href="#projects" class="hover:text-gray-400 transition-colors">Projects</a>
-				<a href="#contact" class="hover:text-gray-400 transition-colors">Contact</a>
+			<div class="font-cinzel text-base sm:text-xl tracking-[0.15em] sm:tracking-widest text-arctic font-semibold">JAVIER OCAMPO</div>
+			<div class="hidden md:flex space-x-8 text-sm tracking-wide uppercase">
+				<a href="#about" class="nav-link">About</a>
+				<a href="#skills" class="nav-link">Skills</a>
+				<a href="#projects" class="nav-link">Projects</a>
+				<a href="#contact" class="nav-link">Contact</a>
 			</div>
 			<div class="md:hidden">
-				<button id="menu-btn" class="text-white focus:outline-none">
-					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<button id="menu-btn" class="text-slate focus:outline-none">
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path class="line top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path>
 						<path class="line middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path>
 						<path class="line bottom" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"></path>
@@ -37,21 +61,57 @@
 			</div>
 		</div>
 	</div>
-	<div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;">
-		<a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
-		<a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-700">Skills</a>
-		<a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-700">Projects</a>
-		<a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-700">Contact</a>
+	<div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-frost/95" style="max-height: 0px;">
+		<a href="#about" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">About</a>
+		<a href="#skills" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">Skills</a>
+		<a href="#projects" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">Projects</a>
+		<a href="#contact" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">Contact</a>
 	</div>
 </nav>
 
 <script>
-	const menuBtn = document.getElementById('menu-btn');
+	// ── Mobile menu toggle ──────────────────────────────────────────
+	const menuBtn    = document.getElementById('menu-btn');
 	const mobileMenu = document.getElementById('mobile-menu');
 
-	menuBtn?.addEventListener('click', function () {
+	function closeMobileMenu() {
+		menuBtn?.classList.remove('is-open');
+		if (mobileMenu) mobileMenu.style.maxHeight = '0px';
+	}
+
+	menuBtn?.addEventListener('click', () => {
 		const isOpen = menuBtn.classList.contains('is-open');
 		menuBtn.classList.toggle('is-open', !isOpen);
-		mobileMenu.style.maxHeight = isOpen ? '0px' : `${mobileMenu.scrollHeight}px`;
+		mobileMenu!.style.maxHeight = isOpen ? '0px' : `${mobileMenu!.scrollHeight}px`;
 	});
+
+	// Close mobile menu when any link inside it is tapped
+	mobileMenu?.querySelectorAll('a').forEach(link => {
+		link.addEventListener('click', closeMobileMenu);
+	});
+
+	// ── Active section highlighting ─────────────────────────────────
+	const sections  = document.querySelectorAll('section[id]');
+	const navLinks  = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
+
+	function setActive(id: string) {
+		navLinks.forEach(link => {
+			const matches = link.getAttribute('href') === `#${id}`;
+			link.classList.toggle('active', matches);
+		});
+	}
+
+	const sectionObserver = new IntersectionObserver(
+		entries => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) setActive(entry.target.id);
+			});
+		},
+		{
+			rootMargin: '-30% 0px -65% 0px', // trigger when section is in the middle third
+			threshold: 0,
+		}
+	);
+
+	sections.forEach(s => sectionObserver.observe(s));
 </script>
