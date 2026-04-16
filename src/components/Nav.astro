@@ -1,3 +1,7 @@
+---
+import DonationButton from './DonationButton.astro';
+---
+
 <style>
 	#menu-btn .line {
 		transition:
@@ -44,11 +48,20 @@
 	<div class="container mx-auto px-6 py-4">
 		<div class="flex justify-between items-center">
 			<div class="font-cinzel text-base sm:text-xl tracking-[0.15em] sm:tracking-widest text-arctic font-semibold">JAVIER OCAMPO</div>
-			<div class="hidden md:flex space-x-8 text-sm tracking-wide uppercase">
+			<div class="hidden md:flex items-center space-x-8 text-sm tracking-wide uppercase">
 				<a href="#about" class="nav-link">About</a>
 				<a href="#skills" class="nav-link">Skills</a>
 				<a href="#projects" class="nav-link">Projects</a>
 				<a href="#contact" class="nav-link">Contact</a>
+				<button
+					data-donate-trigger
+					class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium tracking-wide border border-arctic text-arctic hover:bg-arctic hover:text-white transition-colors duration-200"
+				>
+					<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+					</svg>
+					Donate
+				</button>
 			</div>
 			<div class="md:hidden">
 				<button id="menu-btn" class="text-slate focus:outline-none">
@@ -66,8 +79,19 @@
 		<a href="#skills" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">Skills</a>
 		<a href="#projects" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">Projects</a>
 		<a href="#contact" class="block py-3 px-6 text-sm text-slate hover:text-arctic hover:bg-mist/20 transition-colors uppercase tracking-wide">Contact</a>
+		<button
+			data-donate-trigger
+			class="flex w-full items-center gap-2 py-3 px-6 text-sm text-arctic hover:text-white hover:bg-arctic transition-colors uppercase tracking-wide"
+		>
+			<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+			</svg>
+			Donate
+		</button>
 	</div>
 </nav>
+
+<DonationButton />
 
 <script>
 	// ── Mobile menu toggle ──────────────────────────────────────────
