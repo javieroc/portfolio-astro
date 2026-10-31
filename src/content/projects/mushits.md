@@ -3,7 +3,7 @@ title: MuShits
 author: Javier Ocampo
 weight: 3
 description: A retro terminal-style Android dashboard app featuring weather, location, time, and a local music player with a CRT/CLI aesthetic.
-image: /portfolio-astro/projects/mushits.png
+image: /portfolio-astro/projects/mushits.webp
 github: https://github.com/javieroc/MuShits
 apk: https://github.com/javieroc/MuShits/releases/latest/download/app-release.apk
 stack:

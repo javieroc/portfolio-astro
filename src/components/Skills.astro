@@ -1,42 +1,29 @@
 ---
-import { Code, Server, Zap, Database, Shield, Globe, type AstroComponent } from '@lucide/astro';
+import { Code, Server, Braces, Database, Cloud, Globe, type AstroComponent } from '@lucide/astro';
+import SectionHeading from './SectionHeading.astro';
 
 const skills: { name: string; icon: AstroComponent; level: string }[] = [
-    { name: 'React & Next.js', icon: Code, level: 'Expert' },
-    { name: 'Node.js & NestJS', icon: Server, level: 'Expert' },
-    { name: 'TypeScript & Python', icon: Zap, level: 'Expert' },
-    { name: 'PostgreSQL & MongoDB', icon: Database, level: 'Proficient' },
-    { name: 'AWS & Docker', icon: Shield, level: 'Proficient' },
-    { name: 'GraphQL & REST APIs', icon: Globe, level: 'Proficient' },
-  ];
+	{ name: 'React & Next.js', icon: Code, level: 'Expert' },
+	{ name: 'Node.js & NestJS', icon: Server, level: 'Expert' },
+	{ name: 'TypeScript & Python', icon: Braces, level: 'Expert' },
+	{ name: 'PostgreSQL & MongoDB', icon: Database, level: 'Proficient' },
+	{ name: 'AWS & Docker', icon: Cloud, level: 'Proficient' },
+	{ name: 'GraphQL & REST APIs', icon: Globe, level: 'Proficient' },
+];
 ---
 
-<section id="skills" class="py-24 px-4 sm:px-6">
+<section id="skills" aria-labelledby="skills-title" class="py-24 px-4 sm:px-6 bg-white/50">
 	<div class="container mx-auto">
-		<h2 class="text-3xl text-arctic font-bold text-center mb-2 tracking-wide reveal">
-			Tech Stack
-		</h2>
-		<div class="w-12 h-0.5 bg-glacier mx-auto mb-12 reveal" style="transition-delay: 0.1s"></div>
+		<SectionHeading id="skills-title" title="Tech Stack" />
 
-		<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto stagger">
+		<ul class="skills-list grid md:grid-cols-2 gap-x-14 max-w-3xl mx-auto stagger" role="list">
 			{skills.map((skill) => (
-				<div
-					class="group bg-white border border-mist/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-glacier/60 cursor-default"
-					style="box-shadow: 0 2px 12px rgba(52, 89, 136, 0.05);"
-					onmouseover="this.style.boxShadow='0 8px 28px rgba(52, 89, 136, 0.1)'"
-					onmouseout="this.style.boxShadow='0 2px 12px rgba(52, 89, 136, 0.05)'"
-				>
-					<div class="flex items-center gap-4">
-						<div class="text-glacier group-hover:text-arctic transition-colors duration-300 flex-shrink-0">
-							<skill.icon class="w-5 h-5" />
-						</div>
-						<div>
-							<h3 class="font-semibold text-arctic text-sm tracking-wide">{skill.name}</h3>
-							<p class="text-xs text-mist mt-0.5 uppercase tracking-wider">{skill.level}</p>
-						</div>
-					</div>
-				</div>
+				<li class="flex items-center gap-4 py-4 border-b border-mist/60">
+					<skill.icon class="w-5 h-5 text-glacier flex-shrink-0" aria-hidden="true" />
+					<span class="font-cinzel font-semibold text-arctic tracking-wide">{skill.name}</span>
+					<span class="ml-auto text-sm text-slate">{skill.level}</span>
+				</li>
 			))}
-		</div>
+		</ul>
 	</div>
 </section>

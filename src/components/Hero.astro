@@ -1,138 +1,153 @@
 ---
-import { Linkedin, Github, Mail, FileText } from '@lucide/astro';
+import { Linkedin, Github, Mail, FileText, ChevronDown } from '@lucide/astro';
 import Avatar from '../components/Avatar.astro';
 ---
 
-<section class="relative min-h-screen flex flex-col justify-center overflow-hidden">
+<section class="hero relative min-h-[100svh] flex flex-col justify-center overflow-hidden" aria-labelledby="hero-name">
 
   <!-- Background image with slow Ken Burns zoom -->
   <img
-    src="/portfolio-astro/wallpaper.jpg"
+    src="/portfolio-astro/wallpaper.webp"
     alt=""
     aria-hidden="true"
+    fetchpriority="high"
     class="hero-img absolute inset-0 w-full h-full object-cover object-center"
   />
 
-  <!-- Overlay 1: arctic blue tint to unify with palette -->
-  <div class="absolute inset-0 bg-arctic/50"></div>
+  <!-- Arctic tint, then a central scrim so the type holds against the bright ice -->
+  <div class="absolute inset-0 bg-arctic/45"></div>
+  <div class="hero-scrim absolute inset-0"></div>
 
-  <!-- Overlay 2: vignette depth -->
-  <div
-    class="absolute inset-0"
-    style="background: radial-gradient(ellipse at center, transparent 40%, rgba(20, 42, 80, 0.55) 100%);"
-  ></div>
+  <!-- Bottom fade into the page -->
+  <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-b from-transparent to-frost"></div>
 
-  <!-- Overlay 3: bottom fade into the page -->
-  <div
-    class="absolute bottom-0 left-0 right-0 h-48"
-    style="background: linear-gradient(to bottom, transparent, #F3F5F9);"
-  ></div>
-
-  <!-- Content -->
   <div class="relative z-10 container mx-auto px-4 sm:px-6 pt-28 pb-32 flex flex-col items-center text-center">
 
-    <!-- Avatar -->
     <div class="mb-8 hero-fade" style="--delay: 0s">
-      <Avatar src="/portfolio-astro/avatar.jpeg" size="large" />
+      <Avatar src="/portfolio-astro/avatar.webp" size="large" eager />
     </div>
 
-    <!-- Frosted glass nameplate -->
-    <div
-      class="nameplate w-auto px-6 sm:px-10 md:px-14 py-6 mb-6 hero-fade"
-      style="--delay: 0.15s"
+    <h1
+      id="hero-name"
+      class="hero-name font-uncial text-white text-[2.5rem] sm:text-6xl md:text-7xl leading-none mb-5 hero-fade"
+      style="--delay: 0.12s"
     >
-      <h1 class="whitespace-nowrap text-2xl sm:text-4xl md:text-6xl font-bold tracking-[0.05em] sm:tracking-[0.15em] md:tracking-[0.2em] text-white mb-4">
-        JAVIER OCAMPO
-      </h1>
-      <div class="w-12 h-px bg-white/40 mx-auto mb-4"></div>
-      <p class="text-xs tracking-[0.25em] sm:tracking-[0.35em] text-white/70 uppercase">
+      Javier Ocampo
+    </h1>
+
+    <div class="flex items-center gap-3 mb-6 hero-fade" style="--delay: 0.22s">
+      <span class="h-px w-8 bg-white/60" aria-hidden="true"></span>
+      <p class="font-cinzel text-sm sm:text-base tracking-[0.25em] uppercase text-white">
         Fullstack Developer
       </p>
+      <span class="h-px w-8 bg-white/60" aria-hidden="true"></span>
     </div>
 
-    <!-- Bio -->
-    <p class="text-base md:text-lg text-white/65 max-w-xs sm:max-w-sm md:max-w-md leading-relaxed mb-10 hero-fade" style="--delay: 0.3s">
+    <p class="hero-copy text-base md:text-lg text-white max-w-sm md:max-w-md leading-relaxed mb-10 hero-fade" style="--delay: 0.32s">
       Building purposeful web applications from the ground up.
       Based in Dublin, Ireland.
     </p>
 
-    <!-- Social links -->
-    <div class="flex items-center gap-6 sm:gap-8 hero-fade" style="--delay: 0.45s">
-      <a href="https://github.com/javieroc" target="_blank" aria-label="GitHub"
-        class="text-white/55 hover:text-white transition-all duration-300 hover:scale-110 hover:-translate-y-0.5">
-        <Github class="w-7 h-7" />
+    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 hero-fade" style="--delay: 0.44s">
+      <a
+        href="/portfolio-astro/Javier_Ocampo_CV.pdf"
+        download
+        class="cv-btn inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium tracking-wide text-white"
+      >
+        <FileText class="w-4 h-4" aria-hidden="true" />
+        Download CV
       </a>
-      <a href="https://www.linkedin.com/in/ocampojavieralfonso/" target="_blank" aria-label="LinkedIn"
-        class="text-white/55 hover:text-white transition-all duration-300 hover:scale-110 hover:-translate-y-0.5">
-        <Linkedin class="w-7 h-7" />
-      </a>
-      <a href="mailto:ferroxido@gmail.com" aria-label="Email"
-        class="text-white/55 hover:text-white transition-all duration-300 hover:scale-110 hover:-translate-y-0.5">
-        <Mail class="w-7 h-7" />
-      </a>
-      <a href="/portfolio-astro/Javier_Ocampo_CV.pdf" download aria-label="Download CV"
-        class="text-white/55 hover:text-white transition-all duration-300 hover:scale-110 hover:-translate-y-0.5">
-        <FileText class="w-7 h-7" />
-      </a>
+      <div class="flex items-center gap-2">
+        <a href="https://github.com/javieroc" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hero-icon">
+          <Github class="w-6 h-6" aria-hidden="true" />
+        </a>
+        <a href="https://www.linkedin.com/in/ocampojavieralfonso/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hero-icon">
+          <Linkedin class="w-6 h-6" aria-hidden="true" />
+        </a>
+        <a href="mailto:ferroxido@gmail.com" aria-label="Email" class="hero-icon">
+          <Mail class="w-6 h-6" aria-hidden="true" />
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 scroll-hint hero-fade" style="--delay: 0.7s">
-    <div class="flex flex-col items-center gap-1.5">
-      <span class="text-[10px] tracking-[0.3em] text-white/30 uppercase">Scroll</span>
-      <div class="w-px h-8 bg-gradient-to-b from-white/30 to-transparent"></div>
-    </div>
-  </div>
-
+  <a
+    href="#projects"
+    class="scroll-hint absolute bottom-8 left-1/2 -translate-x-1/2 z-10 p-2 text-arctic hero-fade"
+    style="--delay: 0.7s"
+    aria-label="Skip to projects"
+  >
+    <ChevronDown class="w-6 h-6" aria-hidden="true" />
+  </a>
 </section>
 
 <style>
-  /* Ken Burns slow zoom */
+  .hero-scrim {
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 52%, rgba(20, 42, 80, 0.68) 0%, rgba(20, 42, 80, 0.3) 60%, transparent 100%),
+      radial-gradient(ellipse at center, transparent 45%, rgba(20, 42, 80, 0.45) 100%);
+  }
+
+  .hero-name {
+    letter-spacing: 0.01em;
+    text-shadow: 0 2px 18px rgba(20, 42, 80, 0.55);
+  }
+
+  .hero-copy {
+    text-shadow: 0 1px 8px rgba(20, 42, 80, 0.6);
+  }
+
+  .cv-btn {
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    background: rgba(20, 42, 80, 0.35);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .cv-btn:hover {
+    background: #fff;
+    color: var(--color-arctic);
+  }
+
+  .hero-icon {
+    display: inline-flex;
+    padding: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.25s ease, transform 0.25s var(--ease-out-expo);
+  }
+  .hero-icon:hover {
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .hero :focus-visible {
+    outline-color: #fff;
+  }
+
   @keyframes ken-burns {
-    0%   { transform: scale(1)    translateY(0); }
-    100% { transform: scale(1.08) translateY(-1%); }
+    from { transform: scale(1); }
+    to   { transform: scale(1.08) translateY(-1%); }
   }
   .hero-img {
     animation: ken-burns 22s ease-out forwards;
     transform-origin: center top;
   }
 
-  /* Frosted glass nameplate */
-  .nameplate {
-    background: rgba(52, 89, 136, 0.18);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow:
-      0 8px 32px rgba(20, 42, 80, 0.25),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  /* Hero content entrance animation */
   @keyframes hero-in {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
   }
   .hero-fade {
     opacity: 0;
-    animation: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: hero-in 0.9s var(--ease-out-expo) forwards;
     animation-delay: var(--delay, 0s);
   }
 
-  /* Scroll hint bob */
   @keyframes bob {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(4px); }
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, 4px); }
   }
   .scroll-hint {
-    animation: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards,
-               bob 2.4s ease-in-out 1.8s infinite;
+    animation:
+      hero-in 0.9s var(--ease-out-expo) 0.7s forwards,
+      bob 2.4s ease-in-out 1.8s 4;
   }
 </style>

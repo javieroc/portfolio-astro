@@ -1,48 +1,210 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
+import { ArrowLeft, ArrowRight, Github, Globe, Smartphone } from '@lucide/astro';
 import Layout from '../../layouts/Layout.astro';
+import ProjectCover from '../../components/ProjectCover.astro';
+import { getProjects, projectHref, type Project } from '../../lib/projects';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map((project) => ({ params: { slug: project.slug } }));
+	const projects = await getProjects();
+	return projects.map((project, i) => ({
+		params: { slug: project.slug },
+		props: {
+			project,
+			prev: projects[i - 1] ?? null,
+			next: projects[i + 1] ?? null,
+		},
+	}));
 }
 
-const { slug } = Astro.params;
-const projects = await getCollection('projects');
-const project = projects.find((p) => p.slug === slug);
-
-if (!project) {
-  throw new Error(`Project not found: ${slug}`);
+interface Props {
+	project: Project;
+	prev: Project | null;
+	next: Project | null;
 }
 
-const { title, description, stack, github, demo } = project.data;
+const { project, prev, next } = Astro.props;
+const { title, description, stack, github, demo, apk } = project.data;
 const { Content } = await render(project);
+
+// Many write-ups repeat the summary verbatim; only show the summary as a lede when the body adds something.
+const norm = (s: string) => s.replace(/\s+/g, ' ').trim();
+const bodyRepeatsSummary = norm(project.body ?? '') === norm(description);
 ---
 
-<Layout title={title}>
-  <section class="py-20 px-6">
-    <div class="container mx-auto max-w-3xl">
-      <h1 class="text-4xl font-bold mb-4">{title}</h1>
-      <p class="text-gray-400 mb-6">{description}</p>
-      <div class="flex flex-wrap gap-2 mb-6">
-        {stack?.map((t) => (
-          <span class="bg-steelDark text-sm text-steel-dark px-2 py-1 rounded">{t}</span>
-        ))}
-      </div>
-      <div class="flex gap-4 mb-8">
-        {github && (
-          <a href={github} target="_blank" rel="noopener noreferrer" class="text-silver">GitHub</a>
-        )}
-        {demo && (
-          <a href={demo} target="_blank" rel="noopener noreferrer" class="text-silver">Live Demo</a>
-        )}
-      </div>
+<Layout title={`${title} — Javier Ocampo`} description={description}>
+	<article class="pt-28 pb-24 px-4 sm:px-6">
+		<div class="container mx-auto max-w-4xl">
+			<a href="/portfolio-astro/#projects" class="back-link inline-flex items-center gap-2 text-sm text-slate hover:text-arctic mb-10">
+				<ArrowLeft class="w-4 h-4" aria-hidden="true" />
+				All projects
+			</a>
 
-      {Content && (
-        <div class="prose dark:prose-invert">
-          <Content />
-        </div>
-      )}
-    </div>
-  </section>
+			<header class="mb-10">
+				<h1 class="font-cinzel text-3xl sm:text-5xl font-bold text-arctic tracking-wide mb-5">{title}</h1>
+
+				<ul class="flex flex-wrap gap-2 mb-8" role="list" aria-label="Tech stack">
+					{stack.map((tech) => <li class="tag text-xs sm:text-sm px-3 py-1">{tech}</li>)}
+				</ul>
+
+				{(github || demo || apk) && (
+					<div class="flex flex-wrap gap-3">
+						{demo && (
+							<a href={demo} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+								<Globe class="w-4 h-4" aria-hidden="true" />
+								Live demo
+							</a>
+						)}
+						{apk && (
+							<a href={apk} class="btn btn-primary">
+								<Smartphone class="w-4 h-4" aria-hidden="true" />
+								Download APK
+							</a>
+						)}
+						{github && (
+							<a href={github} target="_blank" rel="noopener noreferrer" class="btn">
+								<Github class="w-4 h-4" aria-hidden="true" />
+								Source on GitHub
+							</a>
+						)}
+					</div>
+				)}
+			</header>
+
+			<figure class="cover-frame mb-12">
+				<div class="aspect-[16/10] bg-frost-deep">
+					<ProjectCover src={project.imageSrc} title={title} fit="contain" eager />
+				</div>
+			</figure>
+
+			<div class="writeup mx-auto">
+				{!bodyRepeatsSummary && <p class="lede">{description}</p>}
+				<Content />
+			</div>
+
+			<nav aria-label="More projects" class="mt-20 pt-8 border-t border-mist/60 grid sm:grid-cols-2 gap-4">
+				{prev ? (
+					<a href={projectHref(prev.slug)} class="pager">
+						<span class="pager-label"><ArrowLeft class="w-4 h-4" aria-hidden="true" /> Previous</span>
+						<span class="pager-title">{prev.data.title}</span>
+					</a>
+				) : <span />}
+				{next && (
+					<a href={projectHref(next.slug)} class="pager sm:text-right sm:items-end">
+						<span class="pager-label">Next <ArrowRight class="w-4 h-4" aria-hidden="true" /></span>
+						<span class="pager-title">{next.data.title}</span>
+					</a>
+				)}
+			</nav>
+		</div>
+	</article>
 </Layout>
+
+<style>
+	.tag {
+		background: rgba(117, 144, 189, 0.12);
+		border: 1px solid rgba(117, 144, 189, 0.3);
+		color: var(--color-ink);
+		border-radius: 2px;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.6rem 1.15rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		letter-spacing: 0.02em;
+		border: 1px solid var(--color-arctic);
+		color: var(--color-arctic);
+		background: transparent;
+		transition: background 0.2s ease, color 0.2s ease;
+	}
+	.btn:hover {
+		background: rgba(52, 89, 136, 0.08);
+	}
+	.btn-primary {
+		background: var(--color-arctic);
+		color: #fff;
+	}
+	.btn-primary:hover {
+		background: var(--color-abyss);
+	}
+
+	.cover-frame {
+		border: 1px solid rgba(190, 197, 215, 0.7);
+		box-shadow: 0 12px 40px rgba(52, 89, 136, 0.1);
+		overflow: hidden;
+	}
+
+	.writeup {
+		max-width: 68ch;
+		color: var(--color-ink);
+		font-size: 1.0625rem;
+		line-height: 1.75;
+	}
+	.writeup .lede {
+		font-size: 1.1875rem;
+		color: var(--color-arctic);
+		margin-bottom: 1.5rem;
+	}
+	.writeup :global(p) {
+		margin-bottom: 1.25rem;
+	}
+	.writeup :global(strong) {
+		color: var(--color-arctic);
+		font-weight: 600;
+	}
+	.writeup :global(h2),
+	.writeup :global(h3) {
+		color: var(--color-arctic);
+		font-weight: 700;
+		margin: 2.5rem 0 1rem;
+	}
+	.writeup :global(h2) { font-size: 1.5rem; }
+	.writeup :global(h3) { font-size: 1.25rem; }
+	.writeup :global(ul),
+	.writeup :global(ol) {
+		padding-left: 1.25rem;
+		margin-bottom: 1.25rem;
+	}
+	.writeup :global(ul) { list-style: disc; }
+	.writeup :global(ol) { list-style: decimal; }
+	.writeup :global(a) {
+		color: var(--color-arctic);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.writeup :global(code) {
+		font-size: 0.9em;
+		background: rgba(117, 144, 189, 0.14);
+		padding: 0.1em 0.35em;
+	}
+
+	.pager {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid rgba(190, 197, 215, 0.7);
+		background: rgba(255, 255, 255, 0.6);
+		transition: border-color 0.2s ease, background 0.2s ease;
+	}
+	.pager:hover {
+		border-color: var(--color-glacier);
+		background: #fff;
+	}
+	.pager-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.8125rem;
+		color: var(--color-slate);
+	}
+	.pager-title {
+		font-family: var(--font-cinzel);
+		font-weight: 700;
+		color: var(--color-arctic);
+	}
+</style>

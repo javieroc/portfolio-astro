@@ -1,0 +1,40 @@
+---
+// Project screenshot, or a designed placeholder when no image exists.
+interface Props {
+	src?: string;
+	title: string;
+	class?: string;
+	fit?: 'cover' | 'contain';
+	eager?: boolean;
+}
+const { src, title, class: className = '', fit = 'cover', eager = false } = Astro.props;
+---
+
+{src ? (
+	<img
+		src={src}
+		alt=""
+		class:list={['w-full h-full', fit === 'cover' ? 'object-cover object-top' : 'object-contain', className]}
+		loading={eager ? 'eager' : 'lazy'}
+		decoding="async"
+	/>
+) : (
+	<div
+		class:list={['cover-fallback w-full h-full flex flex-col items-center justify-center gap-3 px-6 text-center', className]}
+		aria-hidden="true"
+	>
+		<svg width="18" height="64" viewBox="0 0 18 64" fill="currentColor" class="text-mist/70">
+			<path d="M9 0l3 5v36H6V5z" />
+			<rect x="0" y="41" width="18" height="3" rx="1.5" />
+			<rect x="7.6" y="44" width="2.8" height="12" />
+			<circle cx="9" cy="59.5" r="3" />
+		</svg>
+		<span class="font-uncial text-xl text-frost/90">{title}</span>
+	</div>
+)}
+
+<style>
+	.cover-fallback {
+		background: linear-gradient(160deg, #24467a 0%, #142a50 100%);
+	}
+</style>

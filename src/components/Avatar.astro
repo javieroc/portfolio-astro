@@ -2,15 +2,22 @@
 interface Props {
 	src: string;
 	size: 'small' | 'medium' | 'large';
+	eager?: boolean;
 }
 
-const { src, size } = Astro.props;
+const { src, size, eager = false } = Astro.props;
 const sizeClass = {
 	small: 'w-24 h-24',
 	medium: 'w-32 h-32',
-	large: 'w-40 h-40'
-}[size] || 'w-32 h-32';
-
-const _class = `${sizeClass} rounded-full object-cover ring-2 ring-mist ring-offset-4 ring-offset-frost`;
+	large: 'w-36 h-36 sm:w-40 sm:h-40'
+}[size] ?? 'w-32 h-32';
 ---
-<img class={_class} src={src} alt="Javier Ocampo" loading="lazy">
+<img
+	class:list={[sizeClass, 'rounded-full object-cover ring-2 ring-white/70 ring-offset-4 ring-offset-arctic/40']}
+	src={src}
+	alt="Portrait of Javier Ocampo"
+	width="400"
+	height="400"
+	loading={eager ? 'eager' : 'lazy'}
+	decoding="async"
+/>

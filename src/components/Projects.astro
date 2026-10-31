@@ -1,166 +1,133 @@
 ---
-import { Github, Globe } from '@lucide/astro';
-import { getCollection } from 'astro:content';
-import ProjectModal from './ProjectModal.astro';
-import androidLogo from '../assets/android-logo.svg';
+import { Github, Globe, Smartphone, ArrowRight } from '@lucide/astro';
+import SectionHeading from './SectionHeading.astro';
+import ProjectCover from './ProjectCover.astro';
+import { getProjects, projectHref } from '../lib/projects';
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.weight - b.data.weight);
+const projects = await getProjects();
 ---
 
-<section id="projects" class="py-24 px-4 sm:px-6 projects-section">
-  <div class="container mx-auto">
+<section id="projects" aria-labelledby="projects-title" class="projects-section py-24 px-4 sm:px-6">
+	<div class="container mx-auto">
+		<SectionHeading id="projects-title" title="Projects" />
 
-    <h2 class="text-3xl text-arctic font-bold text-center mb-2 tracking-wide reveal">
-      Projects
-    </h2>
-    <div class="w-12 h-0.5 bg-glacier mx-auto mb-16 reveal" style="transition-delay: 0.1s"></div>
+		<ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto stagger" role="list">
+			{projects.map((project) => {
+				const { title, description, stack, github, demo, apk } = project.data;
+				const href = projectHref(project.slug);
+				return (
+					<li class="project-card group relative flex flex-col overflow-hidden">
+						<div class="relative aspect-[16/10] overflow-hidden bg-frost-deep">
+							<ProjectCover
+								src={project.imageSrc}
+								title={title}
+								class="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+							/>
+						</div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto stagger">
-      {projects.map((project) => {
-        const { title, description, stack, github, demo, image, apk } = project.data;
-        const modalId = `project-modal-${project.slug}`;
-        return (
-        <>
-          <div
-            class="glass-card group flex flex-col cursor-pointer overflow-hidden"
-            onclick={`document.getElementById('${modalId}').classList.remove('hidden')`}
-          >
-            <!-- Project image -->
-            <div class="relative h-48 overflow-hidden flex-shrink-0">
-              {image
-                ? <img
-                    src={image}
-                    alt={title}
-                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                : <div class="w-full h-full bg-gradient-to-br from-glacier/20 to-arctic/30"></div>
-              }
-              <!-- Fade image into glass panel below -->
-              <div class="absolute inset-x-0 bottom-0 h-16
-                          bg-gradient-to-t from-white/70 to-transparent"></div>
-            </div>
+						<div class="flex flex-col flex-1 p-5">
+							<h3 class="font-cinzel font-bold text-arctic text-base tracking-wide mb-2">
+								<a href={href} class="card-link">
+									{title}
+								</a>
+							</h3>
+							<p class="text-sm text-ink/90 leading-relaxed mb-4 flex-1 line-clamp-3">
+								{description}
+							</p>
+							<ul class="flex flex-wrap gap-1.5 mb-5" role="list" aria-label="Tech stack">
+								{stack.map((tech) => (
+									<li class="tag text-xs px-2 py-0.5">{tech}</li>
+								))}
+							</ul>
 
-            <!-- Glass content panel -->
-            <div class="glass-content flex flex-col flex-1 p-5">
-              <h3 class="font-bold text-arctic text-sm tracking-wide mb-2
-                         group-hover:text-glacier transition-colors duration-300 font-cinzel">
-                {title}
-              </h3>
-              <p class="text-xs text-slate leading-relaxed mb-4 flex-1 line-clamp-3">
-                {description}
-              </p>
-              <div class="flex flex-wrap gap-1.5 mb-4">
-                {stack.map((tech) => (
-                  <span class="tag text-[10px] px-2 py-0.5 tracking-wide uppercase">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              <!-- Actions -->
-              <div class="flex items-center gap-5 pt-3 border-t border-white/50">
-                {github && (
-                  <a href={github} target="_blank" aria-label="GitHub"
-                    class="action-icon" onclick="event.stopPropagation()">
-                    <Github class="w-6 h-6" />
-                  </a>
-                )}
-                {demo && (
-                  <a href={demo} target="_blank" aria-label="Live demo"
-                    class="action-icon" onclick="event.stopPropagation()">
-                    <Globe class="w-6 h-6" />
-                  </a>
-                )}
-                {apk && (
-                  <a href={apk} target="_blank" aria-label="Download APK"
-                    class="action-icon"
-                    onclick="event.stopPropagation(); if(!confirm('Download the APK?')) return false;">
-                    <img src={androidLogo.src} alt="Android" class="w-6 h-6 opacity-60 group-hover:opacity-100 transition-opacity" />
-                  </a>
-                )}
-                <span class="ml-auto text-[10px] text-glacier/60 tracking-widest uppercase
-                             group-hover:text-glacier transition-colors duration-300">
-                  View →
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <ProjectModal
-            id={modalId}
-            title={title}
-            description={description}
-            image={image}
-            stack={stack}
-            github={github}
-            demo={demo}
-            apk={apk}
-          />
-        </>
-      )})}
-    </div>
-  </div>
+							<div class="relative z-10 flex flex-wrap items-center gap-x-4 gap-y-2 pt-4 border-t border-mist/50 text-sm">
+								{github && (
+									<a href={github} target="_blank" rel="noopener noreferrer" class="card-action">
+										<Github class="w-4 h-4" aria-hidden="true" />
+										Code
+									</a>
+								)}
+								{demo && (
+									<a href={demo} target="_blank" rel="noopener noreferrer" class="card-action">
+										<Globe class="w-4 h-4" aria-hidden="true" />
+										Demo
+									</a>
+								)}
+								{apk && (
+									<a href={apk} class="card-action">
+										<Smartphone class="w-4 h-4" aria-hidden="true" />
+										APK
+									</a>
+								)}
+								<span class="ml-auto inline-flex items-center gap-1 text-arctic font-medium" aria-hidden="true">
+									Details
+									<ArrowRight class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+								</span>
+							</div>
+						</div>
+					</li>
+				);
+			})}
+		</ul>
+	</div>
 </section>
 
 <style>
-  .projects-section {
-    background: linear-gradient(155deg, #EDF0F8 0%, #E6EBF5 60%, #EDF0F8 100%);
-  }
+	.projects-section {
+		background: linear-gradient(155deg, #EDF0F8 0%, var(--color-frost-deep) 60%, #EDF0F8 100%);
+	}
 
-  .glass-card {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.82) 0%,
-      rgba(255, 255, 255, 0.60) 50%,
-      rgba(243, 245, 249, 0.72) 100%
-    );
-    backdrop-filter: blur(20px) saturate(160%) brightness(102%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(102%);
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    border-bottom-color: rgba(190, 197, 215, 0.45);
-    border-right-color: rgba(190, 197, 215, 0.45);
-    box-shadow:
-      0 4px 24px rgba(52, 89, 136, 0.07),
-      0 1px 0 rgba(255, 255, 255, 0.95) inset;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-                background 0.35s ease;
-  }
+	.project-card {
+		background: #fff;
+		border: 1px solid rgba(190, 197, 215, 0.6);
+		box-shadow: 0 4px 24px rgba(52, 89, 136, 0.07);
+		transition:
+			transform 0.35s var(--ease-out-expo),
+			box-shadow 0.35s var(--ease-out-expo),
+			border-color 0.35s ease;
+	}
+	.project-card:hover,
+	.project-card:focus-within {
+		transform: translateY(-4px);
+		border-color: rgba(117, 144, 189, 0.6);
+		box-shadow:
+			0 20px 50px rgba(52, 89, 136, 0.13),
+			0 6px 16px rgba(52, 89, 136, 0.07);
+	}
 
-  .glass-card:hover {
-    transform: translateY(-5px);
-    background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.92) 0%,
-      rgba(255, 255, 255, 0.72) 50%,
-      rgba(243, 245, 249, 0.85) 100%
-    );
-    box-shadow:
-      0 20px 50px rgba(52, 89, 136, 0.13),
-      0 6px 16px rgba(52, 89, 136, 0.07),
-      0 1px 0 rgba(255, 255, 255, 0.95) inset;
-  }
+	/* Stretch the title link over the whole card; action links sit above it. */
+	.card-link::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+	.card-link:focus-visible {
+		outline: none;
+	}
+	.project-card:has(.card-link:focus-visible) {
+		outline: 2px solid var(--color-arctic);
+		outline-offset: 3px;
+	}
 
-  .glass-content {
-    background: transparent;
-  }
+	.tag {
+		background: rgba(117, 144, 189, 0.12);
+		border: 1px solid rgba(117, 144, 189, 0.3);
+		color: var(--color-ink);
+		border-radius: 2px;
+		letter-spacing: 0.02em;
+	}
 
-  .tag {
-    background: rgba(117, 144, 189, 0.12);
-    border: 1px solid rgba(117, 144, 189, 0.25);
-    color: #477278;
-    border-radius: 2px;
-  }
-
-  .action-icon {
-    color: rgba(190, 197, 215, 0.9);
-    transition: color 0.25s ease, transform 0.25s ease;
-  }
-  .action-icon:hover {
-    color: #345988;
-    transform: scale(1.15) translateY(-1px);
-  }
-
-  .font-cinzel {
-    font-family: 'Cinzel Variable', serif;
-  }
+	.card-action {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		padding-block: 0.25rem;
+		color: var(--color-slate);
+		transition: color 0.2s ease;
+	}
+	.card-action:hover {
+		color: var(--color-arctic);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
 </style>

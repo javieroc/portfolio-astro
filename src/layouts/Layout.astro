@@ -1,29 +1,62 @@
 ---
 import "../styles/global.css";
 import '@fontsource-variable/cinzel';
+import '@fontsource/uncial-antiqua';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
+	description?: string;
 }
 
-const { title } = Astro.props;
+const {
+	title,
+	description = 'Javier Ocampo — fullstack developer in Dublin. Side projects across web, Android, and security tooling.',
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/portfolio-astro/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta name="theme-color" content="#345988" />
+		<link rel="icon" type="image/svg+xml" href="/portfolio-astro/favicon.svg" />
+		<link rel="icon" href="/portfolio-astro/favicon.ico" sizes="any" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<script is:inline>document.documentElement.classList.add('js');</script>
 	</head>
-	<body class="min-h-screen bg-frost text-slate">
+	<body class="min-h-screen">
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-arctic focus:text-white focus:px-4 focus:py-2"
+		>
+			Skip to content
+		</a>
 		<Nav />
-		<slot />
+		<main id="main">
+			<slot />
+		</main>
 		<Footer />
+
+		<script>
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('is-visible');
+							observer.unobserve(entry.target);
+						}
+					});
+				},
+				{ threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+			);
+			document.querySelectorAll('.reveal, .stagger').forEach((el) => observer.observe(el));
+		</script>
 	</body>
 </html>

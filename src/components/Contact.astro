@@ -1,72 +1,82 @@
 ---
-import { Mail, Linkedin, Github, Phone, MapPin } from '@lucide/astro';
+import { Mail, Linkedin, Github, Phone, MapPin, FileText } from '@lucide/astro';
+import SectionHeading from './SectionHeading.astro';
 ---
 
-<section id="contact" class="py-24 px-4 sm:px-6">
+<section id="contact" aria-labelledby="contact-title" class="py-24 px-4 sm:px-6">
 	<div class="container mx-auto text-center">
-		<h2 class="text-3xl text-arctic font-bold text-center mb-2 tracking-wide reveal">
-			Get in Touch
-		</h2>
-		<div class="w-12 h-0.5 bg-glacier mx-auto mb-12 reveal" style="transition-delay: 0.1s"></div>
+		<SectionHeading id="contact-title" title="Get in Touch" />
 
-		<div class="max-w-lg mx-auto reveal" style="transition-delay: 0.2s">
-			<div
-				class="bg-white border border-mist/60 p-6 sm:p-10"
-				style="box-shadow: 0 4px 24px rgba(52, 89, 136, 0.06);"
-			>
-				<p class="text-slate leading-relaxed mb-8 text-base">
-					Whether you have a project in mind, want to collaborate, or just want to say hello —
-					my inbox is open.
-				</p>
+		<div class="max-w-lg mx-auto reveal">
+			<p class="text-ink leading-relaxed mb-10 text-base md:text-lg">
+				Whether you have a project in mind, want to collaborate, or just want to say hello —
+				my inbox is open.
+			</p>
 
-				<div class="flex flex-col items-center gap-4 text-sm">
-
-					<a
-						href="mailto:ferroxido@gmail.com"
-						class="group flex items-center gap-3 text-glacier hover:text-arctic transition-colors duration-300"
-					>
-						<Mail class="w-4 h-4 flex-shrink-0" />
-						<span class="border-b border-transparent group-hover:border-arctic transition-all duration-300 tracking-wide">
-							ferroxido@gmail.com
-						</span>
+			<ul class="flex flex-col items-center gap-4 text-base" role="list">
+				<li>
+					<a href="mailto:ferroxido@gmail.com" class="contact-link">
+						<Mail class="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+						ferroxido@gmail.com
 					</a>
-
-					<a
-						href="tel:+353873837850"
-						class="group flex items-center gap-3 text-glacier hover:text-arctic transition-colors duration-300"
-					>
-						<Phone class="w-4 h-4 flex-shrink-0" />
-						<span class="border-b border-transparent group-hover:border-arctic transition-all duration-300 tracking-wide">
-							+353 087 383 7850
-						</span>
+				</li>
+				<li>
+					<a href="tel:+353873837850" class="contact-link">
+						<Phone class="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+						+353 87 383 7850
 					</a>
+				</li>
+				<li class="inline-flex items-center gap-3 text-slate">
+					<MapPin class="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+					Dublin, Ireland
+				</li>
+			</ul>
 
-					<div class="flex items-center gap-3 text-mist">
-						<MapPin class="w-4 h-4 flex-shrink-0" />
-						<span class="tracking-wide">Dublin, Ireland</span>
-					</div>
-
-				</div>
-
-				<div class="flex items-center justify-center gap-6 mt-8 pt-6 border-t border-mist/30">
-					<a
-						href="https://github.com/javieroc"
-						target="_blank"
-						aria-label="GitHub"
-						class="text-mist hover:text-arctic transition-all duration-300 hover:scale-110"
-					>
-						<Github class="w-5 h-5" />
-					</a>
-					<a
-						href="https://www.linkedin.com/in/ocampojavieralfonso/"
-						target="_blank"
-						aria-label="LinkedIn"
-						class="text-mist hover:text-arctic transition-all duration-300 hover:scale-110"
-					>
-						<Linkedin class="w-5 h-5" />
-					</a>
-				</div>
+			<div class="flex flex-wrap items-center justify-center gap-3 mt-10 pt-8 border-t border-mist/60">
+				<a href="/portfolio-astro/Javier_Ocampo_CV.pdf" download class="contact-btn">
+					<FileText class="w-4 h-4" aria-hidden="true" />
+					Download CV
+				</a>
+				<a href="https://github.com/javieroc" target="_blank" rel="noopener noreferrer" class="contact-btn">
+					<Github class="w-4 h-4" aria-hidden="true" />
+					GitHub
+				</a>
+				<a href="https://www.linkedin.com/in/ocampojavieralfonso/" target="_blank" rel="noopener noreferrer" class="contact-btn">
+					<Linkedin class="w-4 h-4" aria-hidden="true" />
+					LinkedIn
+				</a>
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	.contact-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		color: var(--color-arctic);
+		text-decoration: underline;
+		text-decoration-color: rgba(52, 89, 136, 0.3);
+		text-underline-offset: 4px;
+		transition: text-decoration-color 0.2s ease;
+	}
+	.contact-link:hover {
+		text-decoration-color: var(--color-arctic);
+	}
+
+	.contact-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.55rem 1rem;
+		font-size: 0.875rem;
+		color: var(--color-arctic);
+		border: 1px solid rgba(52, 89, 136, 0.35);
+		transition: background 0.2s ease, border-color 0.2s ease;
+	}
+	.contact-btn:hover {
+		background: rgba(52, 89, 136, 0.08);
+		border-color: var(--color-arctic);
+	}
+</style>
